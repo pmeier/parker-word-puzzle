@@ -116,7 +116,7 @@ impl Solution {
     fn count(&self, decoding_map: &HashMap<u32, Vec<String>>) -> usize {
         self.codes
             .iter()
-            .map(|code| decoding_map[&code].len())
+            .map(|code| decoding_map[code].len())
             .reduce(|a, b| a * b)
             .unwrap()
     }
