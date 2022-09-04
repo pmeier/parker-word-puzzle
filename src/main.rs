@@ -1,3 +1,4 @@
+#[cfg(feature = "rayon")]
 use rayon::prelude::*;
 use std::collections::{HashMap, HashSet};
 use std::env;
@@ -77,8 +78,12 @@ fn encode_word(word: &str) -> u32 {
 }
 
 fn solve_outer(codes: &Vec<u32>) -> Vec<Solution> {
-    (0..codes.len())
-        .into_par_iter()
+    #[cfg(feature = "rayon")]
+    let c_iter = (0..codes.len()).into_par_iter();
+    #[cfg(not(feature = "rayon"))]
+    let c_iter = 0..codes.len();
+
+    c_iter
         .map(|idx| solve_inner(codes, idx, 0, 4))
         .flatten()
         .map(|codes| Solution { codes })

@@ -3,8 +3,10 @@ name = "parker-word-puzzle"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[dependencies.rayon]
+version = "1.5"
+optional = true
 
-[dependencies]
+[features]
+default = ["rayon"]
 
-rayon = "1.5"
