@@ -89,7 +89,7 @@ fn solve_outer(codes: &[u32]) -> Vec<Solution> {
         .collect()
 }
 
-fn solve_inner(codes: &[u32], idx: usize, prev_code: u32, depth: u32) -> Option<Vec<u32>> {
+fn solve_inner(codes: &[u32], idx: usize, prev_code: u32, depth: usize) -> Option<Codes> {
     let new_code = codes[idx];
 
     if prev_code & new_code != 0 {
@@ -97,14 +97,14 @@ fn solve_inner(codes: &[u32], idx: usize, prev_code: u32, depth: u32) -> Option<
     }
 
     if depth == 0 {
-        return Some(vec![new_code]);
+        return Some([new_code, 0, 0, 0, 0]);
     }
 
     let new_prev_code = prev_code | new_code;
     let new_depth = depth - 1;
     for new_idx in (idx + 1)..codes.len() {
         if let Some(mut solution) = solve_inner(codes, new_idx, new_prev_code, new_depth) {
-            solution.push(new_code);
+            solution[depth] = new_code;
             return Some(solution);
         }
     }
@@ -112,8 +112,10 @@ fn solve_inner(codes: &[u32], idx: usize, prev_code: u32, depth: u32) -> Option<
     None
 }
 
+type Codes = [u32; 5];
+
 struct Solution {
-    codes: Vec<u32>,
+    codes: Codes,
 }
 
 impl Solution {
@@ -126,7 +128,7 @@ impl Solution {
     }
 
     fn display(&self, decoding_map: &HashMap<u32, Vec<String>>) {
-        let mut codes = self.codes.clone();
+        let mut codes = self.codes;
         codes.sort_by_key(|code| code.trailing_zeros());
         for code in codes {
             let mut chars = String::new();
