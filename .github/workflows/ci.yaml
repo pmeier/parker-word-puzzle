@@ -14,6 +14,8 @@ jobs:
     steps:
       - uses: actions-rs/toolchain@v1
         name: Setup Rust toolchain
+        with:
+          toolchain: stable
 
       - name: Checkout repository
         uses: actions/checkout@v3
