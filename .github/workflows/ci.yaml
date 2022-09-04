@@ -60,7 +60,7 @@ jobs:
           commit_message: apply changes from rustfmt
 
   build:
-    needs: format
+    needs: check
     runs-on: ubuntu-latest
 
     strategy:
@@ -89,7 +89,7 @@ jobs:
           command: build
 
   clippy:
-    needs: format
+    needs: check
     runs-on: ubuntu-latest
 
     steps:
