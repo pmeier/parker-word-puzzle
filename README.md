@@ -1,4 +1,4 @@
-# parker-wordle
+# parker-word-puzzle
 
 Matt Parker, a rather famous [math youtuber](https://www.youtube.com/user/standupmaths), posted a [video](https://www.youtube.com/watch?v=_-AfhLQfb6w) with the descriptive title:
 
@@ -44,7 +44,7 @@ Fred Overflow realized something really important. Or better two things:
     - Similarly, we already know that if we perform the union of the sets, that there will be no duplicate elements.
 
  With that in mind, Fred Overflow encoded each word as an unsigned integer with 32 bits. Each bit encodes whether or not a letter is present. For this, we only need 26 bits and have the remaining 6 bits to spare. For example, the word 'waltz' is encoded as 
- `10010010000000100000000001` with 'a' being the least significant bit. Since binary is quite hard for us humans to decipher, I'm going to switch to the same display format Fred overflow also uses: a `0` is shown as dash `-` and a `1` is shown as the letter it represents starting with the least significant bit, i.e. `A`, on the left:
+ `10010010000000100000000001` with 'a' being the least significant bit. Since binary is quite hard for us humans to decipher, I'm going to switch to the same display format Fred Overflow also uses: a `0` is shown as dash `-` and a `1` is shown as the letter it represents starting with the least significant bit, i.e. `A`, on the left:
 
 ```
 A----------L-------T--W--Z  waltz
@@ -74,7 +74,7 @@ To check whether two encoded words share no characters, we only need to compute 
     -------------------T------
     ```
 
-After we have checked that there is no overlap, we can perform the [bitwise or]([bitwise and](https://en.wikipedia.org/wiki/Bitwise_operation#OR) to combine two words. For example:
+After we have checked that there is no overlap, we can perform the [bitwise or](https://en.wikipedia.org/wiki/Bitwise_operation#OR) to combine two words. For example:
 
 - Combining the words 'waltz' and 'vibex':
 
@@ -101,11 +101,11 @@ So why is this a game changer? Because bitwise operations are blazingly fast. Th
 
 # So, what is this repository about?
 
-It seems there is nothing really left to do, right?[^1] And you would be correct if it weren't for the fact that Fred Overflow implemented his solution in [Java](https://github.com/fredoverflow/wordle)[^2]. In fact, in a comment that Fred overflow liked a user wrote
+It seems there is nothing really left to do, right?[^1] And you would be correct if it weren't for the fact that Fred Overflow implemented his solution in [Java](https://github.com/fredoverflow/wordle)[^2]. In fact, in a comment that Fred overflow liked, a user wrote:
 
 > "just a single instruction on your CPU so that's very efficient" **programs in Java** :P
 
-And that is where I found myself in all of this. I wanted to brush up my [Rust](https://www.rust-lang.org/) skills for quite some time now. Having never gone further than the examples in the [Rust book](https://doc.rust-lang.org/book/), I was looking for an interesting application that needed a fast language. And that is it: this repository exists so I can make some random user on Youtube happy while at the same time use Rust for a 'real world application'.
+And that is where I come into play. I wanted to brush up my [Rust](https://www.rust-lang.org/) skills for quite some time now. Having never gone further than the examples in the [Rust book](https://doc.rust-lang.org/book/), I was looking for an interesting application that needed a fast language. Thus, this repository exists so I can make some random user on Youtube happy while at the same time use Rust for a 'real world application'.
 
 # How do I use it?
 
