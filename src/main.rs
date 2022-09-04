@@ -117,9 +117,8 @@ impl Solution {
         self.codes
             .iter()
             .map(|code| decoding_map[&code].len())
-            .reduce(|a, b| a * b)
-            .unwrap()
-    
+            .reduce(|a, b| a * b).unwrap()
+    }
 
     fn display(&self, decoding_map: &HashMap<u32, Vec<String>>) {
         let mut codes = self.codes.clone();
