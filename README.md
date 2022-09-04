@@ -1,4 +1,4 @@
-# parker-word-puzzle
+# parker-wordle
 
 Matt Parker, a rather famous [math youtuber](https://www.youtube.com/user/standupmaths), posted a [video](https://www.youtube.com/watch?v=_-AfhLQfb6w) with the descriptive title:
 
