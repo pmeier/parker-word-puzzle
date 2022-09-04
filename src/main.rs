@@ -84,8 +84,7 @@ fn solve_outer(codes: &[u32]) -> Vec<Solution> {
     let c_iter = 0..codes.len();
 
     c_iter
-        .map(|idx| solve_inner(codes, idx, 0, 4))
-        .flatten()
+        .flat_map(|idx| solve_inner(codes, idx, 0, 4))
         .map(|codes| Solution { codes })
         .collect()
 }
