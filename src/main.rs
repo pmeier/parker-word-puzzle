@@ -77,7 +77,7 @@ fn encode_word(word: &str) -> u32 {
     code
 }
 
-fn solve_outer(codes: &Vec<u32>) -> Vec<Solution> {
+fn solve_outer(codes: &[u32]) -> Vec<Solution> {
     #[cfg(feature = "rayon")]
     let c_iter = (0..codes.len()).into_par_iter();
     #[cfg(not(feature = "rayon"))]
@@ -90,7 +90,7 @@ fn solve_outer(codes: &Vec<u32>) -> Vec<Solution> {
         .collect()
 }
 
-fn solve_inner(codes: &Vec<u32>, idx: usize, prev_code: u32, depth: u32) -> Option<Vec<u32>> {
+fn solve_inner(codes: &[u32], idx: usize, prev_code: u32, depth: u32) -> Option<Vec<u32>> {
     let new_code = codes[idx];
 
     if prev_code & new_code != 0 {
