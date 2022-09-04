@@ -1,4 +1,4 @@
-name: tests
+name: CI
 
 on:
   push:
@@ -12,11 +12,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions-rs/toolchain@v1
-        name: Setup Rust toolchain
-
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - uses: actions-rs/toolchain@v1
+        name: Setup Rust toolchain
 
       - uses: actions-rs/cargo@v1
         with:
@@ -27,13 +27,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - uses: actions-rs/toolchain@v1
         name: Setup Rust toolchain
         with:
           components: fmt
-
-      - name: Checkout repository
-        uses: actions/checkout@v3
 
       - uses: actions-rs/cargo@v1
         with:
@@ -63,14 +63,14 @@ jobs:
       fail-fast: false
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - uses: actions-rs/toolchain@v1
         name: Setup Rust toolchain
         with:
           toolchain: ${{ matrix.toolchain }}
           override: true
-
-      - name: Checkout repository
-        uses: actions/checkout@v3
 
       - uses: actions-rs/cargo@v1
         with:
@@ -81,13 +81,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - uses: actions-rs/toolchain@v1
         name: Setup Rust toolchain
         with:
           components: clippy
-
-      - name: Checkout repository
-        uses: actions/checkout@v3
     
       - uses: actions-rs/clippy-check@v1
         with:
