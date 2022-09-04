@@ -1,4 +1,4 @@
-name: tests
+name: CI
 
 on:
   push:
@@ -32,6 +32,7 @@ jobs:
       - uses: actions-rs/toolchain@v1
         name: Setup Rust toolchain
         with:
+          toolchain: stable
           components: fmt
 
       - name: Checkout repository
@@ -86,6 +87,7 @@ jobs:
       - uses: actions-rs/toolchain@v1
         name: Setup Rust toolchain
         with:
+          toolchain: stable
           components: clippy
 
       - name: Checkout repository
