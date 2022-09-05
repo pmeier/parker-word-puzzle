@@ -1,3 +1,4 @@
+#[cfg(feature = "rayon")]
 use rayon::prelude::*;
 use std::collections::{HashMap, HashSet};
 use std::env;
@@ -71,45 +72,62 @@ fn encode(words: &[String]) -> (Vec<u32>, HashMap<u32, Vec<String>>) {
 fn encode_word(word: &str) -> u32 {
     let mut code: u32 = 0;
     for char in word.chars() {
-        code |= 1 << (char as u32 - 97);
+        assert!(char.is_ascii_alphabetic());
+        let ucode = char.to_ascii_lowercase() as u32;
+        code |= 1 << (ucode - 'a' as u32);
     }
     code
 }
 
-fn solve_outer(codes: &Vec<u32>) -> Vec<Solution> {
-    (0..codes.len())
-        .into_par_iter()
-        .map(|idx| solve_inner(codes, idx, 0, 4))
-        .flatten()
+fn solve_outer(codes: &[u32]) -> Vec<Solution> {
+    #[cfg(feature = "rayon")]
+    let c_iter = (0..codes.len()).into_par_iter();
+    #[cfg(not(feature = "rayon"))]
+    let c_iter = 0..codes.len();
+
+    let solver = |idx| {
+        let mut result = [0; 5];
+        if solve_inner(codes, idx, 0, 4, &mut result) {
+            Some(result)
+        } else {
+            None
+        }
+    };
+
+    c_iter
+        .flat_map(solver)
         .map(|codes| Solution { codes })
         .collect()
 }
 
-fn solve_inner(codes: &Vec<u32>, idx: usize, prev_code: u32, depth: u32) -> Option<Vec<u32>> {
+fn solve_inner(codes: &[u32], idx: usize, prev_code: u32, depth: usize, result: &mut Codes) -> bool {
     let new_code = codes[idx];
 
     if prev_code & new_code != 0 {
-        return None;
+        return false;
     }
 
     if depth == 0 {
-        return Some(vec![new_code]);
+        result[0] = new_code;
+        return true;
     }
 
     let new_prev_code = prev_code | new_code;
     let new_depth = depth - 1;
     for new_idx in (idx + 1)..codes.len() {
-        if let Some(mut solution) = solve_inner(codes, new_idx, new_prev_code, new_depth) {
-            solution.push(new_code);
-            return Some(solution);
+        if solve_inner(codes, new_idx, new_prev_code, new_depth, result) {
+            result[depth] = new_code;
+            return true;
         }
     }
 
-    None
+    false
 }
 
+type Codes = [u32; 5];
+
 struct Solution {
-    codes: Vec<u32>,
+    codes: Codes,
 }
 
 impl Solution {
@@ -122,7 +140,7 @@ impl Solution {
     }
 
     fn display(&self, decoding_map: &HashMap<u32, Vec<String>>) {
-        let mut codes = self.codes.clone();
+        let mut codes = self.codes;
         codes.sort_by_key(|code| code.trailing_zeros());
         for code in codes {
             let mut chars = String::new();
