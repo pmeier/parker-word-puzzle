@@ -83,33 +83,43 @@ fn solve_outer(codes: &[u32]) -> Vec<Solution> {
     #[cfg(not(feature = "rayon"))]
     let c_iter = 0..codes.len();
 
+    let solver = |idx| {
+        let mut result = [0; 5];
+        if solve_inner(codes, idx, 0, 4, &mut result) {
+            Some(result)
+        } else {
+            None
+        }
+    };
+
     c_iter
-        .flat_map(|idx| solve_inner(codes, idx, 0, 4))
+        .flat_map(solver)
         .map(|codes| Solution { codes })
         .collect()
 }
 
-fn solve_inner(codes: &[u32], idx: usize, prev_code: u32, depth: usize) -> Option<Codes> {
+fn solve_inner(codes: &[u32], idx: usize, prev_code: u32, depth: usize, result: &mut Codes) -> bool {
     let new_code = codes[idx];
 
     if prev_code & new_code != 0 {
-        return None;
+        return false;
     }
 
     if depth == 0 {
-        return Some([new_code, 0, 0, 0, 0]);
+        result[0] = new_code;
+        return true;
     }
 
     let new_prev_code = prev_code | new_code;
     let new_depth = depth - 1;
     for new_idx in (idx + 1)..codes.len() {
-        if let Some(mut solution) = solve_inner(codes, new_idx, new_prev_code, new_depth) {
-            solution[depth] = new_code;
-            return Some(solution);
+        if solve_inner(codes, new_idx, new_prev_code, new_depth, result) {
+            result[depth] = new_code;
+            return true;
         }
     }
 
-    None
+    false
 }
 
 type Codes = [u32; 5];
