@@ -72,7 +72,9 @@ fn encode(words: &[String]) -> (Vec<u32>, HashMap<u32, Vec<String>>) {
 fn encode_word(word: &str) -> u32 {
     let mut code: u32 = 0;
     for char in word.chars() {
-        code |= 1 << (char as u32 - 97);
+        assert!(char.is_ascii_alphabetic());
+        let ucode = char.to_ascii_lowercase() as u32;
+        code |= 1 << (ucode - 'a' as u32);
     }
     code
 }
